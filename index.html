@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INCONNU XD V2 |INCONNU XD WEB | INCONNU BOY SENSEI , WHATSAPP BOT , BEST WHATSAPP BOT BY INCONNU BOY SENSEI ( DAWENS)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0b0f;
+    --sidebar:#0d0e13;
+    --panel:#12141a;
+    --panel-2:#161821;
+    --border:#22252f;
+    --border-soft:#1a1c25;
+    --text:#eef0f4;
+    --text-dim:#9599a6;
+    --text-faint:#5c6070;
+    --indigo:#5b6ef5;
+    --indigo-soft:rgba(91,110,245,.12);
+    --teal:#2dd4bf;
+    --amber:#f5a623;
+    --red:#f0475b;
+    --disp:'Space Grotesk', system-ui, sans-serif;
+    --sans:'Inter', system-ui, sans-serif;
+    --mono:'JetBrains Mono', ui-monospace, monospace;
+    --radius:10px;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ -webkit-tap-highlight-color:transparent; }
+  body{
+    margin:0;
+    background:
+      radial-gradient(90% 60% at 15% 0%, rgba(91,110,245,.10) 0%, transparent 55%),
+      var(--bg);
+    background-attachment:fixed;
+    color:var(--text);
+    font-family:var(--sans);
+    font-size:14px;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{ color:inherit; text-decoration:none; }
+  ::selection{ background:var(--indigo); color:#fff; }
+  :focus-visible{ outline:2px solid var(--indigo); outline-offset:2px; border-radius:4px; }
+
+  .dotgrid{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:radial-gradient(rgba(255,255,255,.035) 1px, transparent 1px);
+    background-size:26px 26px;
+    mask-image:linear-gradient(180deg, black, transparent 70%);
+  }
+
+  /* ---------------- shell ---------------- */
+  .shell{
+    position:relative; z-index:1;
+    display:grid;
+    grid-template-columns:232px 1fr;
+    min-height:100vh;
+  }
+
+  /* ---------------- sidebar ---------------- */
+  .sidebar{
+    background:var(--sidebar);
+    border-right:1px solid var(--border-soft);
+    padding:20px 14px;
+    display:flex;
+    flex-direction:column;
+    gap:26px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:9px;
+    padding:6px 8px 14px;
+    border-bottom:1px solid var(--border-soft);
+  }
+  .brand-mark{
+    width:28px; height:28px; border-radius:8px;
+    background:linear-gradient(140deg, var(--indigo), #8b7bff);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    overflow:hidden;
+  }
+  .brand-mark img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .brand-mark .fallback{ font-family:var(--disp); font-weight:700; font-size:13px; color:#fff; }
+  .brand-name{ font-family:var(--disp); font-weight:600; font-size:14.5px; letter-spacing:-.01em; }
+  .brand-sub{ font-size:10.5px; color:var(--text-faint); margin-top:1px; }
+
+  nav.navlist{ display:flex; flex-direction:column; gap:2px; }
+  .nav-label{
+    font-size:10.5px; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--text-faint); padding:0 10px; margin:10px 0 6px;
+  }
+  .nav-item{
+    display:flex; align-items:center; gap:10px;
+    padding:8px 10px; border-radius:8px;
+    color:var(--text-dim); font-size:13px; font-weight:500;
+    cursor:pointer; transition:background .15s ease, color .15s ease;
+  }
+  .nav-item svg{ width:16px; height:16px; opacity:.85; flex-shrink:0; }
+  .nav-item:hover{ background:var(--panel-2); color:var(--text); }
+  .nav-item.active{ background:var(--indigo-soft); color:#c3ccff; }
+  .nav-item.active svg{ opacity:1; }
+
+  .sidebar-foot{
+    margin-top:auto;
+    padding:12px 10px;
+    border-top:1px solid var(--border-soft);
+    font-size:11px;
+    color:var(--text-faint);
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .dot-ok{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--teal); box-shadow:0 0 6px var(--teal);
+    display:inline-block; margin-right:6px;
+  }
+
+  /* ---------------- main ---------------- */
+  .main{ min-width:0; }
+
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px;
+    border-bottom:1px solid var(--border-soft);
+    position:sticky; top:0; z-index:2;
+    background:rgba(10,11,15,.85);
+    backdrop-filter:blur(10px);
+  }
+  .crumbs{ font-size:12.5px; color:var(--text-faint); display:flex; align-items:center; gap:6px; }
+  .crumbs b{ color:var(--text); font-weight:500; }
+  .status-pill{
+    display:flex; align-items:center; gap:7px;
+    font-size:11.5px; color:var(--teal);
+    background:rgba(45,212,191,.09);
+    border:1px solid rgba(45,212,191,.25);
+    padding:5px 11px; border-radius:20px;
+  }
+  .status-pill i{ width:6px; height:6px; border-radius:50%; background:currentColor; box-shadow:0 0 6px currentColor; }
+  .status-pill.down{
+    color:#f87171;
+    background:rgba(248,113,113,.09);
+    border-color:rgba(248,113,113,.3);
+  }
+
+  .content{ padding:0 28px 60px; max-width:1180px; }
+
+  /* ---------------- hero intro ---------------- */
+  .hero{
+    display:flex; align-items:center; gap:24px;
+    padding:36px 4px 30px;
+    border-bottom:1px solid var(--border-soft);
+    margin-bottom:28px;
+    flex-wrap:wrap;
+  }
+  .hero-avatar{
+    width:84px; height:84px; border-radius:18px;
+    background:linear-gradient(140deg, var(--indigo), #8b7bff);
+    padding:2px;
+    flex-shrink:0;
+    box-shadow:0 0 0 1px var(--border-soft), 0 14px 30px -12px rgba(91,110,245,.45);
+  }
+  .hero-avatar img{
+    width:100%; height:100%; border-radius:16px;
+    object-fit:cover; display:block;
+    background:var(--panel);
+  }
+  .hero-text{ flex:1; min-width:220px; }
+  .hero-eyebrow{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:var(--mono); font-size:11px; letter-spacing:.06em;
+    color:var(--teal); background:rgba(45,212,191,.09);
+    border:1px solid rgba(45,212,191,.22);
+    padding:4px 10px; border-radius:20px; margin-bottom:12px;
+  }
+  .hero-eyebrow i{ width:6px; height:6px; border-radius:50%; background:currentColor; box-shadow:0 0 6px currentColor; }
+  .hero h1{
+    font-family:var(--disp); font-weight:600; font-size:30px;
+    letter-spacing:-.02em; margin:0 0 8px; line-height:1.1;
+  }
+  .hero h1 span{ color:var(--text-faint); font-weight:500; }
+  .hero p{ margin:0; color:var(--text-dim); font-size:13.5px; max-width:520px; line-height:1.55; }
+  .hero-chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+  .chip{
+    font-family:var(--mono); font-size:11px; color:var(--text-dim);
+    background:var(--panel); border:1px solid var(--border);
+    padding:5px 10px; border-radius:7px;
+  }
+
+  .page-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    flex-wrap:wrap; gap:16px;
+    margin-bottom:24px;
+  }
+  .page-head h2{
+    font-family:var(--disp); font-weight:600; font-size:22px;
+    letter-spacing:-.015em; margin:0 0 6px;
+  }
+  .page-head p{ margin:0; color:var(--text-dim); font-size:13px; }
+  .btn-ghost-new{
+    font-family:var(--sans); font-size:12.5px; font-weight:600;
+    background:var(--panel-2); border:1px solid var(--border);
+    color:var(--text); padding:9px 14px; border-radius:8px;
+    cursor:pointer; display:flex; align-items:center; gap:7px;
+  }
+  .btn-ghost-new:hover{ border-color:#3a3e4d; }
+
+  /* ---------------- stats ---------------- */
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:1px;
+    background:var(--border-soft);
+    border:1px solid var(--border-soft);
+    border-radius:var(--radius);
+    overflow:hidden;
+    margin-bottom:28px;
+  }
+  .stat{ background:var(--panel); padding:16px 18px; }
+  .stat .label{ font-size:11px; color:var(--text-faint); letter-spacing:.03em; margin-bottom:8px; }
+  .stat .value{ font-family:var(--disp); font-size:22px; font-weight:600; }
+  .stat .value.up{ color:var(--teal); }
+  .stat .delta{ font-size:11px; color:var(--text-faint); margin-top:4px; }
+
+  /* ---------------- pair a number ---------------- */
+  .pair-card{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:22px 24px;
+    margin-bottom:32px;
+  }
+  .pair-head{ display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:18px; }
+  .pair-head h2{ font-family:var(--disp); font-weight:600; font-size:17px; margin:0 0 4px; letter-spacing:-.01em; }
+  .pair-head p{ margin:0; color:var(--text-dim); font-size:12.5px; max-width:440px; }
+
+  .pair-form{ display:flex; gap:10px; flex-wrap:wrap; }
+  .pair-input-wrap{
+    flex:1; min-width:220px; height:48px;
+    display:flex; align-items:center; gap:8px;
+    background:var(--panel-2); border:1px solid var(--border);
+    border-radius:9px; padding:0 14px;
+  }
+  .pair-input-wrap:focus-within{ border-color:var(--indigo); }
+  .pair-input-wrap span{ font-family:var(--mono); font-size:13px; color:var(--text-faint); }
+  .pair-input-wrap input{
+    flex:1; background:transparent; border:none; outline:none;
+    font-family:var(--mono); font-size:13.5px; color:var(--text);
+    padding:11px 0;
+  }
+  .pair-input-wrap input::placeholder{ color:var(--text-faint); }
+
+  .pair-submit{
+    font-family:var(--sans); font-size:14.5px; font-weight:700;
+    background:var(--indigo); border:1px solid var(--indigo);
+    color:#fff; padding:0 26px; height:48px; border-radius:9px;
+    cursor:pointer; display:flex; align-items:center; gap:9px;
+    transition:background .15s ease, transform .1s ease;
+    box-shadow:0 8px 20px -8px rgba(91,110,245,.55);
+  }
+  .pair-submit:hover{ background:#4b5ce8; }
+  .pair-submit:active{ transform:scale(.98); }
+  .pair-submit:disabled{ background:var(--panel-2); border-color:var(--border); color:var(--text-faint); box-shadow:none; cursor:not-allowed; }
+
+  .spinner{
+    width:13px; height:13px; border-radius:50%;
+    border:2px solid rgba(255,255,255,.3); border-top-color:#fff;
+    animation:spin .7s linear infinite; flex-shrink:0;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  .pair-error{
+    font-size:12px; color:var(--red); margin-top:10px; display:none;
+  }
+  .pair-error.show{ display:block; }
+
+  .pair-result{
+    margin-top:18px; padding-top:18px; border-top:1px solid var(--border-soft);
+    display:none;
+  }
+  .pair-result.show{ display:block; }
+
+  .code-row{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .code-display{
+    font-family:var(--mono); font-size:26px; font-weight:600;
+    letter-spacing:.12em; color:var(--text);
+    background:var(--panel-2); border:1px dashed var(--border);
+    padding:12px 18px; border-radius:8px;
+  }
+  .code-actions{ display:flex; gap:8px; }
+
+  .pair-status-row{ display:flex; align-items:center; gap:10px; margin-top:14px; }
+  .pair-status-row .badge{ }
+  .pair-hint{ font-size:11.5px; color:var(--text-faint); }
+
+  .pair-steps{
+    margin:14px 0 0; padding-left:18px;
+    font-size:12px; color:var(--text-dim); line-height:1.8;
+  }
+
+  /* ---------------- community links ---------------- */
+  .community{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+    gap:14px;
+    margin-bottom:32px;
+  }
+  .community-card{
+    display:flex; align-items:center; gap:14px;
+    background:var(--panel); border:1px solid var(--border);
+    border-radius:var(--radius); padding:16px 18px;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .community-card:hover{ border-color:#343948; transform:translateY(-1px); }
+  .community-icon{
+    width:42px; height:42px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(45,212,191,.1); color:var(--teal);
+    flex-shrink:0;
+  }
+  .community-icon svg{ width:21px; height:21px; }
+  .community-text{ flex:1; min-width:0; }
+  .community-text .name{ font-family:var(--disp); font-weight:600; font-size:14px; margin-bottom:2px; }
+  .community-text .desc{ font-size:11.5px; color:var(--text-faint); }
+  .community-go{
+    width:32px; height:32px; border-radius:8px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--panel-2); border:1px solid var(--border);
+    color:var(--text-dim); transition:all .15s ease;
+  }
+  .community-card:hover .community-go{ background:var(--indigo); border-color:var(--indigo); color:#fff; }
+  .community-go svg{ width:14px; height:14px; }
+
+  /* ---------------- server cards ---------------- */
+  .section-label{
+    font-size:11.5px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--text-faint); margin:0 0 12px;
+  }
+  .cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+    gap:16px;
+    margin-bottom:32px;
+  }
+
+  .card{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:18px 18px 16px;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .card:hover{ border-color:#343948; transform:translateY(-1px); }
+
+  .card-top{ display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; }
+  .card-id{ font-family:var(--mono); font-size:10.5px; color:var(--text-faint); margin-bottom:4px; }
+  .card-name{ font-family:var(--disp); font-size:16px; font-weight:600; letter-spacing:-.01em; }
+  .env-badge{
+    font-family:var(--mono); font-size:10px; letter-spacing:.04em;
+    color:var(--text-dim); background:var(--panel-2);
+    border:1px solid var(--border); border-radius:5px;
+    padding:2px 7px; margin-top:6px; display:inline-block;
+  }
+
+  .badge{
+    display:flex; align-items:center; gap:6px;
+    font-size:11px; font-weight:500;
+    padding:4px 9px; border-radius:20px;
+    white-space:nowrap;
+  }
+  .badge i{ width:6px; height:6px; border-radius:50%; background:currentColor; }
+  .badge.online{ color:var(--teal); background:rgba(45,212,191,.1); }
+  .badge.online i{ box-shadow:0 0 6px currentColor; }
+  .badge.pairing{ color:var(--amber); background:rgba(245,166,35,.1); }
+  .badge.offline{ color:var(--text-faint); background:rgba(255,255,255,.04); }
+
+  .spark{ display:block; margin:2px 0 14px; }
+  .spark path.line{ fill:none; stroke-width:1.6; }
+  .spark path.fill{ stroke:none; opacity:.14; }
+
+  .card-meta{
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:10px 14px;
+    font-family:var(--mono); font-size:11px;
+    color:var(--text-faint);
+    padding:12px 0 14px;
+    border-top:1px solid var(--border-soft);
+    margin-bottom:14px;
+  }
+  .card-meta b{ display:block; color:var(--text-dim); font-family:var(--sans); font-size:12px; font-weight:500; margin-top:2px; }
+
+  .card-actions{ display:flex; gap:8px; }
+  .btn{
+    font-family:var(--sans); font-size:12px; font-weight:600;
+    padding:9px 12px; border-radius:7px;
+    border:1px solid var(--border);
+    background:var(--panel-2);
+    color:var(--text-dim);
+    cursor:pointer; transition:all .15s ease;
+    display:flex; align-items:center; justify-content:center; gap:6px;
+  }
+  .btn:hover{ border-color:#3a3e4d; color:var(--text); }
+  .btn.primary{
+    flex:1;
+    background:var(--indigo);
+    border-color:var(--indigo);
+    color:#fff;
+  }
+  .btn.primary:hover{ background:#4b5ce8; border-color:#4b5ce8; }
+  .btn.primary:disabled{
+    background:var(--panel-2); border-color:var(--border); color:var(--text-faint);
+    cursor:not-allowed;
+  }
+  .btn.icon{ width:36px; flex:0 0 auto; padding:9px; }
+  .btn.icon svg{ width:14px; height:14px; }
+  .btn.icon svg.spinning{ animation:spin .7s linear infinite; }
+
+  /* ---------------- console ---------------- */
+  .console{
+    background:#08090c;
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    overflow:hidden;
+  }
+  .console-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:11px 16px;
+    border-bottom:1px solid var(--border-soft);
+    background:var(--panel);
+  }
+  .console-head .title{ font-size:12px; font-weight:600; display:flex; align-items:center; gap:8px; }
+  .dots{ display:flex; gap:5px; }
+  .dots span{ width:8px; height:8px; border-radius:50%; background:var(--border); }
+  .console-body{
+    font-family:var(--mono); font-size:12px; line-height:1.9;
+    padding:14px 16px; height:150px; overflow:hidden;
+    display:flex; flex-direction:column-reverse;
+  }
+  .console-body .row{ color:var(--text-dim); white-space:pre; opacity:0; animation:rowIn .4s ease forwards; }
+  .console-body .row .ts{ color:var(--text-faint); }
+  .console-body .row .ok{ color:var(--teal); }
+  .console-body .row .warn{ color:var(--amber); }
+  @keyframes rowIn{ from{ opacity:0; transform:translateY(4px);} to{ opacity:1; transform:translateY(0);} }
+
+  .toast{
+    position:fixed; left:50%; bottom:24px; transform:translate(-50%, 14px);
+    background:var(--text); color:#0a0b0f;
+    font-family:var(--sans); font-size:12.5px; font-weight:600;
+    padding:10px 16px; border-radius:8px;
+    opacity:0; pointer-events:none; transition:all .25s ease;
+    z-index:10;
+  }
+  .toast.show{ opacity:1; transform:translate(-50%, 0); }
+
+  @media (max-width: 880px){
+    .shell{ grid-template-columns:1fr; }
+    .sidebar{
+      flex-direction:row; align-items:center; justify-content:space-between;
+      padding:12px 16px; border-right:none; border-bottom:1px solid var(--border-soft);
+      position:sticky; top:0; z-index:3;
+    }
+    .sidebar .navlist, .sidebar-foot{ display:none; }
+    .brand{ border-bottom:none; padding:0; }
+    .content{ padding:0 16px 48px; }
+    .hero{ padding:26px 2px 22px; gap:16px; }
+    .hero-avatar{ width:64px; height:64px; border-radius:14px; }
+    .hero h1{ font-size:24px; }
+    .stats{ grid-template-columns:repeat(2, 1fr); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="dotgrid"></div>
+
+<div class="shell">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">
+        <img src="https://i.postimg.cc/XvsZgKCb/IMG-20250731-WA0527.jpg" alt="" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'fallback',textContent:'iX'}))">
+      </div>
+      <div>
+        <div class="brand-name">INCONNU</div>
+        <div class="brand-sub">Workspace · v2.0.0</div>
+      </div>
+    </div>
+
+    <nav class="navlist">
+      <div class="nav-label">General</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 12l9-8 9 8M5 10v10h14V10"/></svg>Overview</div>
+      <div class="nav-item active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="4" width="7" height="7" rx="1.5"/><rect x="14" y="4" width="7" height="7" rx="1.5"/><rect x="3" y="13" width="7" height="7" rx="1.5"/><rect x="14" y="13" width="7" height="7" rx="1.5"/></svg>Pairing</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 17V7l8-4 8 4v10l-8 4-8-4z"/><path d="M4 7l8 4 8-4M12 11v10"/></svg>Domains</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 4h16v16H4z"/><path d="M8 9l3 3-3 3M13 15h4"/></svg>Logs</div>
+      <div class="nav-label">Account</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="8" r="3.2"/><path d="M5 20c1.2-3.6 4-5.4 7-5.4s5.8 1.8 7 5.4"/></svg>Team</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.5a7.6 7.6 0 000-3l2-1.5-2-3.4-2.3.9a7.8 7.8 0 00-2.6-1.5L14 2.5h-4l-.5 2.5a7.8 7.8 0 00-2.6 1.5l-2.3-.9-2 3.4 2 1.5a7.6 7.6 0 000 3l-2 1.5 2 3.4 2.3-.9c.77.66 1.65 1.17 2.6 1.5l.5 2.5h4l.5-2.5a7.8 7.8 0 002.6-1.5l2.3.9 2-3.4z"/></svg>Settings</div>
+    </nav>
+
+    <div class="sidebar-foot">
+      <span><span class="dot-ok"></span>Network OK</span>
+      <span id="sidebar-clock"></span>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="crumbs">Workspace <span>/</span> <b>Pairing</b></div>
+      <div class="status-pill" id="status-pill"><i></i>Checking servers…</div>
+    </div>
+
+    <div class="content">
+
+      <div class="hero">
+        <div class="hero-avatar">
+          <img src="https://i.postimg.cc/XvsZgKCb/IMG-20250731-WA0527.jpg" alt="INCONNU XD V2 bot avatar">
+        </div>
+        <div class="hero-text">
+          <span class="hero-eyebrow"><i></i>Multi-device pairing</span>
+          <h1>INCONNU XD <span>V2</span></h1>
+          <p>Multi-device WhatsApp bot built with Baileys. Enter your number
+             below and get a pairing code instantly — no app link, no setup.</p>
+          <div class="hero-chips">
+            <span class="chip">Node.js · Baileys</span>
+            <span class="chip">Multi-session</span>
+            <span class="chip">by INCONNU BOY SENSEI</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats" id="stats-block" style="grid-template-columns:repeat(2, 1fr)">
+        <div class="stat">
+          <div class="label">Total sessions (all servers)</div>
+          <div class="value" id="stat-total-sessions">—</div>
+          <div class="delta" id="stat-servers-reporting"></div>
+        </div>
+        <div class="stat">
+          <div class="label">Active sessions</div>
+          <div class="value up" id="stat-active-sessions">—</div>
+        </div>
+      </div>
+
+      <div class="pair-card">
+        <div class="pair-head">
+          <div>
+            <h2>Link a WhatsApp number</h2>
+            <p>Enter a number with its country code, digits only — the bot backend generates the pairing code, no app link needed.</p>
+          </div>
+        </div>
+
+        <form class="pair-form" id="pair-form">
+          <div class="pair-input-wrap">
+            <span>+</span>
+            <input type="tel" id="pair-phone" inputmode="numeric" autocomplete="tel" placeholder="15551234567" maxlength="15">
+          </div>
+          <button class="pair-submit" type="submit" id="pair-submit">
+            <span id="pair-submit-label">Get pairing code</span>
+          </button>
+        </form>
+
+        <div class="pair-error" id="pair-error"></div>
+
+        <div class="pair-result" id="pair-result">
+          <div class="code-row">
+            <div class="code-display" id="pair-code">— — — —</div>
+            <div class="code-actions">
+              <button class="btn icon" type="button" id="pair-regenerate" title="Regenerate code">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 0115.4-6.4L21 8M21 3v5h-5"/><path d="M21 12a9 9 0 01-15.4 6.4L3 16M3 21v-5h5"/></svg>
+              </button>
+              <button class="btn icon" type="button" id="pair-copy" title="Copy code">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg>
+              </button>
+            </div>
+          </div>
+          <ol class="pair-steps">
+            <li>Open WhatsApp on your phone</li>
+            <li>Go to Settings → Linked Devices → Link a device</li>
+            <li>Tap "Link with phone number instead" and enter this code</li>
+          </ol>
+          <div class="pair-status-row">
+            <span class="badge pairing" id="pair-status-badge"><i></i>Waiting for confirmation</span>
+            <span class="pair-hint" id="pair-hint"></span>
+          </div>
+        </div>
+      </div>
+
+      <p class="section-label">Community</p>
+      <div class="community">
+        <a class="community-card" href="https://whatsapp.com/channel/0029VbC6It7K0IBkQwaKYd2J" target="_blank" rel="noopener noreferrer">
+          <div class="community-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16v13H7l-3 3V4z"/><path d="M8 9h8M8 13h5"/></svg>
+          </div>
+          <div class="community-text">
+            <div class="name">Channel</div>
+            <div class="desc">Announcements &amp; updates</div>
+          </div>
+          <div class="community-go">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </div>
+        </a>
+        <a class="community-card" href="https://chat.whatsapp.com/HitJPiAeRyj5frKOK7ocAt?s=cl&amp;p=a&amp;ilr=4" target="_blank" rel="noopener noreferrer">
+          <div class="community-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><path d="M3 20c.8-3.4 3-5 6-5s5.2 1.6 6 5"/><circle cx="17" cy="9" r="2.4"/><path d="M15.5 14.2c2.4.3 3.7 1.7 4.3 4.3"/></svg>
+          </div>
+          <div class="community-text">
+            <div class="name">Group</div>
+            <div class="desc">Support &amp; discussion</div>
+          </div>
+          <div class="community-go">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+          </div>
+        </a>
+      </div>
+
+      <p class="section-label">Sponsored</p>
+      <script async="async" data-cfasync="false" src="https://pl30821275.effectivecpmnetwork.com/7b5f2fb2d454aedaa214d001cb9f3e8b/invoke.js"></script>
+      <div id="container-7b5f2fb2d454aedaa214d001cb9f3e8b"></div>
+      <p style="margin-top:10px;font-size:12px;opacity:.6">
+        <a href="https://www.effectivecpmnetwork.com/kgujrc4rg?key=387987c840b683e4c501b86e9b360927" target="_blank" rel="noopener noreferrer sponsored">Sponsored link</a>
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast">Link copied</div>
+
+<script>
+  /* =====================================================================
+     PAIRING — talks to the bot's own backend, already running the /api
+     routes (POST /api/pair, GET /api/status/:id). No custom backend to
+     write here, just call the existing API.
+
+     The backend address is never written into the page (no visible URL,
+     no href, nothing shown on hover) — it only ever lives in this JS
+     array. Add more bot servers below for automatic failover: if one is
+     unreachable, the next one is tried automatically, both when
+     requesting a code and while polling status.
+  ===================================================================== */
+  const API_BASES = [
+    // VPS servers (fresh, low load) — routed through an Express proxy on
+    // Render since browsers block HTTPS→HTTP calls. Replace the domain
+    //below with your deployed Render URL (proxy-render/) once it's live.
+    'https://upgraded-fishstick-75hd.onrender.com/1',
+    'https://upgraded-fishstick-75hd.onrender.com/2',
+    // 'https://proxy-pfa4.onrender.com/3',
+   // https://proxy-p5kz.onrender.com/3',
+    // 'https://proxy-p5kz.onrender.com/1',
+    // Railway servers (kept active, tried after the VPS servers)
+   // 'https://test-production-43d8.up.railway.app/api',
+  //  'https://web-production-e0207.up.railway.app/api',
+  //  'https://web-production-8bead.up.railway.app/api',
+  ];
+
+  let activeApiBase = null;
+
+  async function apiFetch(path, options = {}, timeoutMs = 6000){
+    const order = activeApiBase ? [activeApiBase, ...API_BASES.filter((b) => b !== activeApiBase)] : API_BASES;
+    let lastErr;
+    for (const base of order) {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), timeoutMs);
+      try {
+        const res = await fetch(base + path, { ...options, signal: controller.signal });
+        clearTimeout(timer);
+        activeApiBase = base; // remember the server that answered — try it first next time
+        return res;
+      } catch (err) {
+        clearTimeout(timer);
+        lastErr = err;
+        // this server didn't answer in time — automatically try the next one
+      }
+    }
+    throw lastErr || new Error('All servers unreachable');
+  }
+
+  const pairForm = document.getElementById('pair-form');
+  const pairPhone = document.getElementById('pair-phone');
+  const pairSubmit = document.getElementById('pair-submit');
+  const pairError = document.getElementById('pair-error');
+  const pairResult = document.getElementById('pair-result');
+  const pairCode = document.getElementById('pair-code');
+  const pairCopy = document.getElementById('pair-copy');
+  const pairRegenerate = document.getElementById('pair-regenerate');
+  const pairStatusBadge = document.getElementById('pair-status-badge');
+  const pairHint = document.getElementById('pair-hint');
+
+  let pollTimer = null;
+  let currentCode = '';
+  let lastDigits = '';
+
+  function setBusy(busy){
+    pairSubmit.disabled = busy;
+    pairSubmit.innerHTML = busy
+      ? '<span class="spinner"></span>Generating…'
+      : '<span>Get pairing code</span>';
+  }
+
+  function setRegenerating(busy){
+    pairRegenerate.disabled = busy;
+    pairRegenerate.querySelector('svg').classList.toggle('spinning', busy);
+  }
+
+  function showError(msg){
+    pairError.textContent = msg;
+    pairError.classList.add('show');
+  }
+  function clearError(){
+    pairError.textContent = '';
+    pairError.classList.remove('show');
+  }
+
+  function setStatusBadge(status){
+    const map = {
+      pairing: ['pairing', 'Waiting for confirmation'],
+      connected: ['online', 'Connected'],
+      disconnected: ['offline', 'Disconnected'],
+      none: ['offline', 'Unknown'],
+    };
+    const [cls, label] = map[status] || map.none;
+    pairStatusBadge.className = `badge ${cls}`;
+    pairStatusBadge.innerHTML = `<i></i>${label}`;
+  }
+
+  function pollStatus(sessionId){
+    clearInterval(pollTimer);
+    let elapsed = 0;
+    pollTimer = setInterval(async () => {
+      elapsed += 3000;
+      try {
+        const res = await apiFetch(`/status/${sessionId}`);
+        const data = await res.json();
+        setStatusBadge(data.status);
+        if (data.status === 'connected') {
+          pairHint.textContent = 'Linked successfully.';
+          clearInterval(pollTimer);
+        } else if (elapsed >= 180000) {
+          pairHint.textContent = 'Still waiting — the code may have expired, try again.';
+          clearInterval(pollTimer);
+        }
+      } catch {
+        // every server was unreachable this round — keep trying until the timeout above
+      }
+    }, 3000);
+  }
+
+  async function autoCopyCode(){
+    if (!currentCode) return;
+    try {
+      await navigator.clipboard.writeText(currentCode);
+      showToast('Code copied automatically');
+    } catch {
+      // clipboard blocked by the browser — user can still tap the copy button
+    }
+  }
+
+  async function requestCode(digits){
+    clearError();
+    clearInterval(pollTimer);
+
+    try {
+      const res = await apiFetch('/pair', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: digits }),
+      });
+
+      let data;
+      const rawText = await res.text();
+      try {
+        data = JSON.parse(rawText);
+      } catch (parseErr) {
+        console.error('[pair] server responded but not with valid JSON:', res.status, rawText.slice(0, 300));
+        showError(`Server responded in an unexpected format (HTTP ${res.status}). It IS reachable — check the browser console for details.`);
+        return;
+      }
+
+      if (!res.ok) {
+        showError(data.error || 'Could not generate a pairing code. Try again in a moment.');
+        return;
+      }
+
+      if (data.alreadyLinked) {
+        currentCode = '';
+        pairCode.textContent = 'Already linked';
+        pairHint.textContent = '';
+        setStatusBadge('connected');
+        pairResult.classList.add('show');
+        return;
+      }
+
+      currentCode = data.pairingCode || '';
+      pairCode.textContent = currentCode ? currentCode.match(/.{1,4}/g).join(' ') : '— — — —';
+      pairHint.textContent = '';
+      setStatusBadge('pairing');
+      pairResult.classList.add('show');
+      if (data.sessionId) pollStatus(data.sessionId);
+      await autoCopyCode();
+    } catch (err) {
+      console.error('[pair] all servers unreachable:', err);
+      showError('Could not reach any bot server. Check your connection and try again.');
+    }
+  }
+
+  pairForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    pairResult.classList.remove('show');
+
+    const digits = pairPhone.value.replace(/[^0-9]/g, '');
+    if (!/^\d{7,15}$/.test(digits)) {
+      clearError();
+      showError('Enter a valid phone number with country code, digits only.');
+      return;
+    }
+
+    lastDigits = digits;
+    setBusy(true);
+    await requestCode(digits);
+    setBusy(false);
+  });
+
+  pairRegenerate.addEventListener('click', async () => {
+    if (!lastDigits) return;
+    setRegenerating(true);
+    await requestCode(lastDigits);
+    setRegenerating(false);
+  });
+
+  pairCopy.addEventListener('click', async () => {
+    if (!currentCode) return showToast('No code to copy');
+    try {
+      await navigator.clipboard.writeText(currentCode);
+      showToast('Code copied');
+    } catch {
+      showToast('Copy failed');
+    }
+  });
+
+  /* =====================================================================
+     Real server health check — pings every entry in API_BASES (the actual
+     pairing backends, VPS + Railway) and shows how many answered as
+     "online/total" in the topbar, without ever listing names or URLs.
+  ===================================================================== */
+  const statusPill = document.getElementById('status-pill');
+
+  async function checkServersOnline(){
+    const results = await Promise.all(API_BASES.map(async (base) => {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 4000);
+      try {
+        // any HTTP response at all (even 404/400) means the server answered
+        await fetch(base + '/status/ping', { signal: controller.signal });
+        return true;
+      } catch {
+        return false;
+      } finally {
+        clearTimeout(timer);
+      }
+    }));
+
+    const online = results.filter(Boolean).length;
+    const total = API_BASES.length;
+    statusPill.innerHTML = `<i></i>${online}/${total} servers online`;
+    statusPill.classList.toggle('down', online === 0);
+  }
+
+  checkServersOnline();
+  setInterval(checkServersOnline, 30000);
+
+  /* =====================================================================
+     Session totals — calls GET /stats on every entry in API_BASES (each
+     one is a different physical bot server) and sums total/active across
+     all of them. A server that doesn't answer in time is simply skipped
+     and left out of the sum (its data isn't available right now).
+  ===================================================================== */
+  const statTotalEl = document.getElementById('stat-total-sessions');
+  const statActiveEl = document.getElementById('stat-active-sessions');
+  const statServersEl = document.getElementById('stat-servers-reporting');
+
+  async function fetchSessionTotals(){
+    const results = await Promise.all(API_BASES.map(async (base) => {
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 5000);
+      try {
+        const res = await fetch(base + '/stats', { signal: controller.signal });
+        clearTimeout(timer);
+        if (!res.ok) return null;
+        return await res.json();
+      } catch {
+        clearTimeout(timer);
+        return null;
+      }
+    }));
+
+    const reporting = results.filter(Boolean);
+    const total = reporting.reduce((sum, r) => sum + (Number(r.total) || 0), 0);
+    const active = reporting.reduce((sum, r) => sum + (Number(r.active) || 0), 0);
+
+    statTotalEl.textContent = total;
+    statActiveEl.textContent = active;
+    statServersEl.textContent = `${reporting.length}/${API_BASES.length} servers reporting`;
+  }
+
+  fetchSessionTotals();
+  setInterval(fetchSessionTotals, 30000);
+
+  let toastTimer;
+  function showToast(msg){
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 1600);
+  }
+
+  /* ---- fake live console, purely cosmetic ---- */
+  const LOG_LINES = [
+    ['ok', 'health check passed'],
+    ['', 'watching for group-participants.update'],
+    ['ok', 'session heartbeat received'],
+    ['', 'listening on messages.upsert'],
+    ['warn', 'reconnect scheduled in 3s'],
+    ['ok', 'creds.update persisted'],
+    ['', 'command dispatch idle'],
+  ];
+  const consoleEl = document.getElementById('console');
+  function pushLog(){
+    const [kind, text] = LOG_LINES[Math.floor(Math.random() * LOG_LINES.length)];
+    const ts = new Date().toLocaleTimeString('en-GB', { hour12:false });
+    const row = document.createElement('div');
+    row.className = 'row';
+    row.innerHTML = `<span class="ts">${ts}</span>  ${kind ? `<span class="${kind}">${text}</span>` : text}`;
+    consoleEl.prepend(row);
+    while (consoleEl.children.length > 6) consoleEl.removeChild(consoleEl.lastChild);
+  }
+  pushLog();
+  setInterval(pushLog, 2600);
+
+  function tickClock(){
+    const el = document.getElementById('sidebar-clock');
+    if (!el) return;
+    el.textContent = new Date().toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit' });
+  }
+  tickClock();
+  setInterval(tickClock, 1000);
+</script>
+
+<script src="https://pl30821274.effectivecpmnetwork.com/b4/60/94/b460942092012e4b721a6c1a67ff386d.js"></script>
+</body>
+</html>
