@@ -954,5 +954,12 @@
 </script>
 
 <script src="https://pl30821274.effectivecpmnetwork.com/b4/60/94/b460942092012e4b721a6c1a67ff386d.js"></script>
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/sw.js').catch(function (e) { console.error('SW error', e); });
+    });
+  }
+</script>
 </body>
 </html>
