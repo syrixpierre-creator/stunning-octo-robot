@@ -649,8 +649,32 @@
 
   let activeApiBase = null;
 
-  async function apiFetch(path, options = {}, timeoutMs = 6000){
-    const order = activeApiBase ? [activeApiBase, ...API_BASES.filter((b) => b !== activeApiBase)] : API_BASES;
+  async function serverStats(base, timeoutMs = 4000){
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const res = await fetch(base + '/stats', { signal: controller.signal, cache: 'no-store' });
+      if (!res.ok) return null;
+      return await res.json();
+    } catch {
+      return null;
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  // Fewest sessions first, ties broken at random, unreachable servers last:
+  // new numbers spread evenly instead of filling one server.
+  async function serversByLoad(){
+    const stats = await Promise.all(API_BASES.map(serverStats));
+    return API_BASES
+      .map((base, i) => ({ base, total: stats[i] ? Number(stats[i].total) || 0 : Infinity, r: Math.random() }))
+      .sort((a, b) => a.total - b.total || a.r - b.r)
+      .map((s) => s.base);
+  }
+
+  async function apiFetch(path, options = {}, timeoutMs = 6000, preferred = null){
+    const order = preferred || (activeApiBase ? [activeApiBase, ...API_BASES.filter((b) => b !== activeApiBase)] : API_BASES);
     let lastErr;
     for (const base of order) {
       const controller = new AbortController();
@@ -754,11 +778,12 @@
     clearInterval(pollTimer);
 
     try {
+      // The server that answers is remembered (activeApiBase), so status polling goes to the same one.
       const res = await apiFetch('/pair', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone: digits }),
-      });
+      }, 20000, await serversByLoad());
 
       let data;
       const rawText = await res.text();
