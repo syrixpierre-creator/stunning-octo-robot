@@ -643,18 +643,8 @@
      requesting a code and while polling status.
   ===================================================================== */
   const API_BASES = [
-    // VPS servers (fresh, low load) — routed through an Express proxy on
-    // Render since browsers block HTTPS→HTTP calls. Replace the domain
-    //below with your deployed Render URL (proxy-render/) once it's live.
-    'https://proxy-1-7znw.onrender.com/1',
-    'https://proxy-1-7znw.onrender.com/2',
-    // 'https://proxy-pfa4.onrender.com/3',
-   // https://proxy-p5kz.onrender.com/3',
-    // 'https://proxy-p5kz.onrender.com/1',
-    // Railway servers (kept active, tried after the VPS servers)
-   // 'https://test-production-43d8.up.railway.app/api',
-  //  'https://web-production-e0207.up.railway.app/api',
-  //  'https://web-production-8bead.up.railway.app/api',
+    '/api/1',
+    '/api/2',
   ];
 
   let activeApiBase = null;
