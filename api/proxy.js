@@ -1,8 +1,8 @@
 try { require('dotenv').config(); } catch {}
 
 const TARGETS = {
-  '1': process.env.TARGET_1 || 'http://200.141.31.158:3001/api',
-  '2': process.env.TARGET_2 || 'http://200.141.31.158:3002/api',
+  '1': process.env.TARGET_1 || 'http://84.247.133.130:3001/api',
+  '2': process.env.TARGET_2 || 'http://84.247.133.130:3002/api',
 };
 
 // vercel.json rewrites /api/<server>/<path> to /api/proxy?s=<server>&p=<path>
